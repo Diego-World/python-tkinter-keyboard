@@ -9,6 +9,13 @@ keyboard_frame = Tk()
 keyboard_frame.title("Teclado Virtual Recicla Machine")
 keyboard_frame.geometry(f"{DEF_WIDTG+10}x{DEF_HEIGHT+10}")
 
+#TextBox de teste do teclado
+textbox_frame = Tk()
+textbox_frame.title("Textbox")
+textbox_frame.geometry("300x50")
+textbox = Entry(textbox_frame)
+textbox.pack()
+
 keyboard_frame.configure(bg='#1a1a1a')
 # Sobreposição do teclado sobre itens na tela
 keyboard_frame.attributes("-topmost", True)
@@ -44,33 +51,19 @@ def on_leave(e):
     if btnLabels[e.widget]:
         btnLabels[e.widget].configure(bg="#333", fg="#888")
 
+#Printa no console
+
 # def handleClick(event):
 #         print(event.widget['text'])
 
 shift_held = False
 
-def on_shift_press(event):
-    global shift_held
-    shift_held = not shift_held
-    if shift_held:
-        event.widget.configure(bg=CONTRASTCLICK_COL, fg="#000")
-        for button in allButtons:
-            if button['text'] in shiftSp:
-                labelT = button['text'].split("+/")
-                button.configure(text=labelT[1])
-    else:
-        event.widget.configure(bg = "#333", fg="#fff")
-        for button in allButtons:
-            if button['text'] in shiftSp:
-                labelT = button['text'].split("+/")
-                button.configure(text=labelT[0])
-
 def handleClick(event):
+    text = event.widget['text']
     if shift_held:
-        if event.widget['text'] in shiftSp:
-            print(event.widget['text'].split("+/")[1])
-    else:
-        print(event.widget['text'])
+        if text in shiftSp:
+            text = text.split("+/")[1]
+    textbox.insert("end", text)
 
 btnLabels = { }
 
@@ -78,6 +71,7 @@ Y = 2.5
 
 for r in rows:
     X = 5
+
     for i in r:
         btnWidth = 0.06428*DEF_WIDTG
         btnHeight = 0.2*DEF_HEIGHT
@@ -86,6 +80,8 @@ for r in rows:
         pady = round(btnHeight/10)
 
         frame = Frame(keyboard_frame, highlightbackground="#1E1E1E", highlightthickness= 4)
+
+
 
         if i in shiftSp:
             anchor = "se"
